@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="해상도 설정"
+        android:textSize="20sp"
+        android:gravity="center"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBaseline="@+id/garo"/>
+        <TextView
+            android:id="@+id/center2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textSize="16sp"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/center"
+            android:layout_alignBaseline="@+id/sero"/>
+
+        <TextView
+            android:id="@+id/garo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_toLeftOf="@+id/center"
+            android:layout_marginRight="30dp"
+            android:text="가 로"/>
+        <TextView
+            android:id="@+id/sero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="30dp"
+            android:layout_toLeftOf="@+id/center2"
+            android:layout_marginRight="30dp"
+            android:text="세 로"
+            android:layout_below="@+id/garo"/>
+
+        <EditText
+            android:id="@+id/etgaro"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="600"
+            android:textSize="16sp"
+            android:inputType="number"
+            android:layout_toRightOf="@+id/center"
+            android:layout_marginLeft="20dp"
+            android:layout_alignBaseline="@+id/garo"/>
+        <EditText
+            android:id="@+id/etsero"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="800"
+            android:textSize="16sp"
+            android:inputType="number"
+            android:layout_toRightOf="@+id/center2"
+            android:layout_marginLeft="20dp"
+            android:layout_alignBaseline="@+id/sero"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="화면비"/>
+        <RadioGroup
+            android:id="@+id/rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <RadioButton
+                android:id="@+id/rb34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3:4"/>
+            <RadioButton
+                android:id="@+id/rb916"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9:16"/>
+            <RadioButton
+                android:id="@+id/rbcustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사용자 지정"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:gravity="center">-->
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@mipmap/ic_launcher"/>-->
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@mipmap/ic_launcher"/>-->
+    <!--</LinearLayout>-->
+
+</LinearLayout>

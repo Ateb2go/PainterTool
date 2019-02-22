@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UploadActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_upload"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="#CCCCCCCC"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_upload"
+                android:text="Select Picture"
+                android:textSize="16sp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"/>
+
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/iv_upload"
+                android:layout_marginTop="60dp"
+                android:layout_centerHorizontal="true">
+                <EditText
+                    android:id="@+id/et_nick"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Nickname"
+                    android:maxLength="10"
+                    android:inputType="text"/>
+                <EditText
+                    android:id="@+id/et_pass"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:maxLength="20"
+                    android:inputType="textPassword"
+                    android:layout_marginLeft="30dp"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:maxLength="25"
+                android:layout_below="@id/linear"
+                android:hint="Title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/et_comment"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_title"
+                android:layout_centerHorizontal="true"
+                android:hint="comment"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:gravity="top"
+                android:layout_marginTop="20dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_comment"
+                android:text="upload"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="30dp"
+                android:onClick="clickUpload"/>
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
