@@ -65,6 +65,6 @@ public class DrawActivity extends AppCompatActivity {
             case R.id.undo: Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show();  break;
             case R.id.redo: Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show();  break;
             case R.id.save: Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show();  break;
-        }//check
+        }//check..
     }
 }
