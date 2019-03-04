@@ -6,9 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 
 public class CanvasView extends View{
@@ -71,5 +72,17 @@ public class CanvasView extends View{
                 break;
         }
         return true;
+    }
+
+    void setPaintColor(int color){
+        paint.setColor(color);
+    }
+
+    void setPen(){
+        paint.setXfermode(null);
+    }
+
+    void setEraser(){
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 }

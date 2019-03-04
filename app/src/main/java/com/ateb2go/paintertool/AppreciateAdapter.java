@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+
 public class AppreciateAdapter extends FragmentPagerAdapter {
 
     Fragment[] fragments=new Fragment[4];
-    String[] tabTitles=new String[]{"Newspeed", "Weekly", "Monthly"};
+    String[] tabTitles=new String[]{"New Picture", "Weekly Best", "Monthly Best"};
 
     public AppreciateAdapter(FragmentManager fm) {
         super(fm);

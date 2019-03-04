@@ -16,43 +16,50 @@
             <ImageView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
-                android:layout_marginTop="50dp"/>
+                android:layout_height="75dp"
+                android:src="@drawable/logo01paintndots"
+                android:padding="4dp"
+                android:layout_marginTop="60dp"/>
             <ImageView
                 android:id="@+id/btn_newpaint"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
-                android:layout_marginTop="30dp"
+                android:layout_height="60dp"
+                android:src="@drawable/logo02newdraw"
+                android:layout_marginTop="40dp"
+                android:padding="8dp"
                 android:layout_below="@id/title"/>
             <ImageView
                 android:id="@+id/btn_loadcanvas"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_height="60dp"
+                android:src="@drawable/logo03loadcanvas"
                 android:layout_marginTop="10dp"
-                android:layout_below="@id/btn_newpaint"/>
+                android:padding="8dp"
+                android:layout_below="@id/btn_newpaint"
+                android:visibility="gone"/>
             <ImageView
                 android:id="@+id/btn_upload"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_height="60dp"
+                android:src="@drawable/logo04upload"
                 android:layout_marginTop="10dp"
+                android:padding="8dp"
                 android:layout_below="@id/btn_loadcanvas"/>
             <ImageView
                 android:id="@+id/btn_appreciate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_height="60dp"
+                android:src="@drawable/logo05appreciate"
                 android:layout_marginTop="10dp"
+                android:padding="8dp"
                 android:layout_below="@id/btn_upload"/>
             <ImageView
                 android:id="@+id/btn_exit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_height="60dp"
+                android:src="@drawable/logo06exit"
                 android:layout_marginTop="10dp"
+                android:padding="8dp"
                 android:layout_below="@id/btn_appreciate"/>
         </RelativeLayout>
     </ScrollView>
