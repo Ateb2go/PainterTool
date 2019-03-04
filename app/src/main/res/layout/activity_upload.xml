@@ -31,7 +31,7 @@
                 android:layout_marginTop="20dp"/>
 
             <LinearLayout
-                android:id="@+id/linear"
+                android:id="@+id/upload_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -61,7 +61,7 @@
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:maxLength="25"
-                android:layout_below="@id/linear"
+                android:layout_below="@id/upload_linear"
                 android:hint="Title"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"/>

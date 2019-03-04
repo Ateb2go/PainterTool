@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton rb916;
     RadioButton rbcustom;
 
-    int width=600, height=800;
+    int width=900, height=1200;
 
 
     @Override
@@ -72,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     //커스텀다이얼로그
                     dialogSet();
-
                     break;
                 case 1:
                     //저장한 작업 로딩
                     break;
                 case 2:
-                    intent=new Intent(context, UploadActivity.class);
-                    startActivity(intent);
+//                    intent=new Intent(context, UploadActivity.class);
+//                    startActivity(intent);
+                    Toast.makeText(context, "준비중입니다", Toast.LENGTH_LONG).show();
                     break;
                 case 3:
                     intent=new Intent(context, AppreciateActivity.class);

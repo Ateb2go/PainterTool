@@ -59,7 +59,7 @@
             android:id="@+id/etgaro"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="600"
+            android:text="900"
             android:textSize="16sp"
             android:inputType="number"
             android:layout_toRightOf="@+id/center"
@@ -69,7 +69,7 @@
             android:id="@+id/etsero"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="800"
+            android:text="1200"
             android:textSize="16sp"
             android:inputType="number"
             android:layout_toRightOf="@+id/center2"
@@ -111,19 +111,5 @@
         </RadioGroup>
     </LinearLayout>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:gravity="center">-->
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@mipmap/ic_launcher"/>-->
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@mipmap/ic_launcher"/>-->
-    <!--</LinearLayout>-->
 
 </LinearLayout>
