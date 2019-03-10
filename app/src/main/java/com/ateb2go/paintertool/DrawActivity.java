@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,12 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import pl.polidea.view.ZoomView;
 
 public class DrawActivity extends AppCompatActivity {
 
     CanvasView cv;
 
     //상단 아이콘
+    HorizontalScrollView hsv;
     ImageView pen, fillPaint, eraser, palette, spoid, undo, redo, save;
     boolean isPaletteSelected=false;
     boolean isPenSizeSelected=false;
@@ -47,7 +50,7 @@ public class DrawActivity extends AppCompatActivity {
     ImageView[] colorStocks=new ImageView[5];
     CircleImageView frame, spectrum;
     RelativeLayout spectrumbox;
-    boolean isSpbox=false;
+    boolean isSpbox=true;
     int red, blue, green;
     int color, spoidColor;
     InputMethodManager imm;
@@ -55,12 +58,17 @@ public class DrawActivity extends AppCompatActivity {
 
     RelativeLayout relativeLayout;
 
+    CustomZoomView zoomView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
 
         relativeLayout=findViewById(R.id.relativeLayout);
+        hsv=findViewById(R.id.hsv);
+        hsv.bringToFront();
         //아이콘 참조
         pen=findViewById(R.id.pen);
         fillPaint=findViewById(R.id.fillPaint);
@@ -80,6 +88,7 @@ public class DrawActivity extends AppCompatActivity {
         //색변경 레이아웃 참조
         colorChange=findViewById(R.id.colorchange);
         prevcolor=findViewById(R.id.prevcolor);
+        prevcolor.setOnTouchListener(onTouchListener);
         etR=findViewById(R.id.et_color_r);
         etG=findViewById(R.id.et_color_g);
         etB=findViewById(R.id.et_color_b);
@@ -105,12 +114,19 @@ public class DrawActivity extends AppCompatActivity {
 
         Rect rect=new Rect(0, 0, width, height);
 
+
+        zoomView=new CustomZoomView(this);
+
         cv=new CanvasView(this, rect);
         RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(width, height);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         cv.setLayoutParams(layoutParams);
         cv.setBackgroundColor(Color.WHITE);
-        relativeLayout.addView(cv);
+        relativeLayout.addView(zoomView);
+
+        zoomView.addView(cv);
+        zoomView.setLayoutParams(layoutParams);
+        zoomView.setMaxZoom(4f);
     }
 
     public void clickIcons(View view) {
@@ -128,7 +144,7 @@ public class DrawActivity extends AppCompatActivity {
                 pen.setBackgroundColor(Color.TRANSPARENT);
                 eraser.setBackgroundColor(Color.TRANSPARENT);
                 fillPaint.setBackgroundColor(Color.RED);
-//                cv.setFillPaint();
+                cv.setFillPaint();
                 break;
 
             case R.id.eraser:
@@ -143,7 +159,9 @@ public class DrawActivity extends AppCompatActivity {
                 break;
 
             case R.id.palette:
-                if(!isPaletteSelected) setPalette();
+                if(!isPaletteSelected) {
+                    setPalette();
+                }
                 else gonePalette();
                 break;
 
@@ -201,18 +219,20 @@ public class DrawActivity extends AppCompatActivity {
         colorChange.setVisibility(View.VISIBLE);
         colorChange.bringToFront();
         palette.setBackgroundColor(Color.RED);
+
         isPaletteSelected=true;
-        isSpbox=false;
+        clickPrevColor();
 
         gonePenResize();
     }
     void gonePalette(){
         colorChange.setVisibility(View.GONE);
         palette.setBackgroundColor(Color.TRANSPARENT);
-        spectrum.setVisibility(View.GONE);
-        frame.setVisibility(View.GONE);
+
+        spectrumbox.setVisibility(View.GONE);
+        isSpbox=true;
+
         isPaletteSelected=false;
-        isSpbox=false;
     }
     TextWatcher watcherR=new TextWatcher() {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -293,32 +313,37 @@ public class DrawActivity extends AppCompatActivity {
             etB.setText(blue+"");
         }
     }
-    public void clickPrevColor(View view) {
-        if(!isSpbox){
+    public void clickPrevColor() {
+        if(isSpbox){
             spectrumbox.setVisibility(View.VISIBLE);
             spectrumbox.bringToFront();
-            isSpbox=true;
-        }else{
-            spectrumbox.setVisibility(View.GONE);
             isSpbox=false;
+        }else {
+            spectrumbox.setVisibility(View.GONE);
+            isSpbox=true;
         }
     }
     View.OnTouchListener onTouchListener=new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            CircleImageView view=(CircleImageView)v;
-            int sX=(int)event.getX();
-            int sY=(int)event.getY();
-            view.setDrawingCacheEnabled(true);
-            Bitmap bitmap=Bitmap.createBitmap(view.getDrawingCache());
-            view.setDrawingCacheEnabled(false);
+            if(v==prevcolor){
+                clickPrevColor();
+                return false;
+            }else if(v==spectrum){
+                CircleImageView view=(CircleImageView)v;
+                int sX=(int)event.getX();
+                int sY=(int)event.getY();
+                view.setDrawingCacheEnabled(true);
+                Bitmap bitmap=Bitmap.createBitmap(view.getDrawingCache());
+                view.setDrawingCacheEnabled(false);
 
-            int r=bitmap.getWidth()/2;
+                int r=bitmap.getWidth()/2;
 
-            if(Math.pow(r-sX, 2)+Math.pow(r-sY, 2)<=Math.pow(r, 2) && sX>=0 && sY>=0){
-                int pixel=bitmap.getPixel(sX, sY);
-                color=Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel));
-                setPaletteDialog(color);
+                if(Math.pow(r-sX, 2)+Math.pow(r-sY, 2)<=Math.pow(r, 2) && sX>=0 && sY>=0){
+                    int pixel=bitmap.getPixel(sX, sY);
+                    color=Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel));
+                    setPaletteDialog(color);
+                }
             }
             return true;
         }
@@ -339,8 +364,6 @@ public class DrawActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                if(!isSpbox) clickPrevColor(spectrum);
             case MotionEvent.ACTION_UP:
                 if(isSpoidSelected && !cv.getIsEmptySpace()){
                     spoidColor=cv.getSpoidColor();
@@ -365,4 +388,26 @@ public class DrawActivity extends AppCompatActivity {
             return true;
         }
     };
+
+
+
+
+
+
+
+
+
+
+
+
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ줌ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    //https://github.com/Polidea/android-zoom-view/blob/master/src/pl/polidea/view/ZoomView.java
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getPointerCount()==2){
+            zoomView.dispatchTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }
