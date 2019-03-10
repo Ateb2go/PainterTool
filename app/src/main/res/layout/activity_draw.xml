@@ -6,15 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DrawActivity"
-    android:background="#999999">
+    android:background="@color/darkgray">
+
     <HorizontalScrollView
-        android:layout_width="330dp"
+        android:id="@+id/hsv"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        >
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical">
             <ImageView
                 android:id="@+id/pen"
                 android:layout_width="50dp"
@@ -23,7 +27,7 @@
                 android:onClick="clickIcons"
                 android:padding="4dp"/>
             <ImageView
-                android:id="@+id/paint"
+                android:id="@+id/fillPaint"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/icon02paint"
@@ -80,6 +84,222 @@
                 android:padding="4dp"/>
         </LinearLayout>
     </HorizontalScrollView>
+
+
+    <!--ㅡㅡㅡㅡㅡㅡㅡ펜 두께 변경하기ㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+    <LinearLayout
+        android:id="@+id/pensize"
+        android:layout_below="@id/hsv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_marginLeft="8dp">
+        <SeekBar
+            android:id="@+id/pensize_seekbar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:max="50"
+            android:min="1"
+            android:progress="10"/>
+        <TextView
+            android:id="@+id/pensize_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:textSize="16sp"
+            android:layout_marginLeft="4dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="px"
+            android:textSize="16sp"
+            android:layout_marginRight="8dp"/>
+    </LinearLayout>
+    
+    
+    <!--ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ색 변경ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+    <LinearLayout
+        android:id="@+id/colorchange"
+        android:layout_below="@+id/hsv"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp">
+        <FrameLayout
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:padding="1dp"
+            android:background="#555555">
+            <ImageView
+                android:id="@+id/prevcolor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:onClick="clickPrevColor"/></FrameLayout>
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R:"
+                    android:layout_marginLeft="4dp"/>
+                <EditText
+                    android:id="@+id/et_color_r"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:text="0"
+                    android:minWidth="40dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="G:"
+                    android:layout_marginLeft="4dp"/>
+                <EditText
+                    android:id="@+id/et_color_g"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:text="0"
+                    android:minWidth="40dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="B:"
+                    android:layout_marginLeft="4dp"/>
+                <EditText
+                    android:id="@+id/et_color_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:text="0"
+                    android:minWidth="40dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="저장한 색(길게 누르면 삭제)"
+                android:gravity="center"/>
+            <LinearLayout
+                android:layout_width="180dp"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#555555"
+                    android:padding="1dp">
+                    <ImageView
+                        android:id="@+id/colorstock1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:onClick="clickColorStock"/>
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#555555"
+                    android:padding="1dp">
+                    <ImageView
+                        android:id="@+id/colorstock2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:onClick="clickColorStock"/>
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#555555"
+                    android:padding="1dp">
+                    <ImageView
+                        android:id="@+id/colorstock3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:onClick="clickColorStock"/>
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#555555"
+                    android:padding="1dp">
+                    <ImageView
+                        android:id="@+id/colorstock4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:onClick="clickColorStock"/>
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#555555"
+                    android:padding="1dp">
+                    <ImageView
+                        android:id="@+id/colorstock5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#000000"
+                        android:onClick="clickColorStock"/>
+                </FrameLayout>
+            </LinearLayout>
+            <!--아래 저장한 색-->
+        </LinearLayout>
+        <!--오른쪽 3줄-->
+    </LinearLayout>
+    <!--색 상자-->
+    <RelativeLayout
+        android:id="@+id/spectrumbox"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/colorchange"
+        android:visibility="gone">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/spectrumframe"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/frameresize"
+            android:layout_margin="4dp"
+            />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/colorspectrum"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:padding="1dp"
+            android:src="@drawable/colorspectrumresize"
+            android:layout_margin="4dp"/>
+    </RelativeLayout>
+    <!--색 스펙트럼-->
 
 
 </RelativeLayout>
