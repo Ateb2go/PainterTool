@@ -74,12 +74,11 @@ public class CanvasView extends View{
                 path.moveTo(x, y);
                 oldX=x;
                 oldY=y;
-                if(isFillPaint) {
-                    int pixel=bitmap.getPixel((int)x, (int)y);
-                    checkcolor=Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel));
-                    paint.setStrokeWidth(5);
-                    fillPaint((int)x, (int)y);
-                }
+//                if(isFillPaint) {
+//                    checkcolor=bitmap.getPixel((int)x, (int)y);
+//                    paint.setStrokeWidth(5);
+//                    fillPaint((int)x, (int)y);
+//                }
                 if(isSpoid){
                     int pixel=bitmap.getPixel((int)x, (int)y);
 
@@ -133,7 +132,8 @@ public class CanvasView extends View{
         isSpoid=false;
     }
     int checkcolor;
-    int direction;
+
+
     void fillPaint(int x, int y){
         Log.e("CTAG", x+", "+y);
         if(x<=0 || y<=0 || x>=width || y>=height) return;
@@ -141,30 +141,7 @@ public class CanvasView extends View{
         int pixel=bitmap.getPixel(x, y);
         int nextColor=Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel));
         canvas.drawPoint(x, y, paint);
-        if(checkcolor==nextColor && x>=0 && y>=0 && x<=width && y<=height){
-            while (direction<=3){
-                switch (direction){
-                    case 0:
-                        x-=2;
-                        fillPaint(x, y);
-                        break;
-                    case 1:
-                        y-=2;
-                        fillPaint(x, y);
-                        break;
-                    case 2:
-                        x+=2;
-                        fillPaint(x, y);
-                        break;
-                    case 3:
-                        y+=2;
-                        fillPaint(x, y);
-                        break;
-                }
-                direction++;
-            }
-            direction=0;
-        }
+
     }
 
     void setSpoidColor(){

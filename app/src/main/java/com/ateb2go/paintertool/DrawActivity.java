@@ -8,8 +8,6 @@ import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -130,7 +128,7 @@ public class DrawActivity extends AppCompatActivity {
                 pen.setBackgroundColor(Color.TRANSPARENT);
                 eraser.setBackgroundColor(Color.TRANSPARENT);
                 fillPaint.setBackgroundColor(Color.RED);
-                cv.setFillPaint();
+//                cv.setFillPaint();
                 break;
 
             case R.id.eraser:
@@ -204,6 +202,7 @@ public class DrawActivity extends AppCompatActivity {
         colorChange.bringToFront();
         palette.setBackgroundColor(Color.RED);
         isPaletteSelected=true;
+        isSpbox=false;
 
         gonePenResize();
     }
@@ -213,6 +212,7 @@ public class DrawActivity extends AppCompatActivity {
         spectrum.setVisibility(View.GONE);
         frame.setVisibility(View.GONE);
         isPaletteSelected=false;
+        isSpbox=false;
     }
     TextWatcher watcherR=new TextWatcher() {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -339,6 +339,8 @@ public class DrawActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                if(!isSpbox) clickPrevColor(spectrum);
             case MotionEvent.ACTION_UP:
                 if(isSpoidSelected && !cv.getIsEmptySpace()){
                     spoidColor=cv.getSpoidColor();
