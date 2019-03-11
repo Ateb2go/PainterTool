@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import pl.polidea.view.ZoomView;
 
 public class DrawActivity extends AppCompatActivity {
 
@@ -354,7 +355,6 @@ public class DrawActivity extends AppCompatActivity {
     void setSpoid(){
         cv.setSpoidColor();
         isSpoidSelected=true;
-
         gonePenResize();
     }
     void goneSpoid(){
@@ -396,18 +396,14 @@ public class DrawActivity extends AppCompatActivity {
 
 
 
-
-
-
-
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ줌ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
     //https://github.com/Polidea/android-zoom-view/blob/master/src/pl/polidea/view/ZoomView.java
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(ev.getPointerCount()==2){
-            zoomView.dispatchTouchEvent(ev);
-        }
-        return super.dispatchTouchEvent(ev);
-    }
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        if(ev.getPointerCount()==2){
+//            zoomView.dispatchTouchEvent(ev);
+//        }
+//        return super.dispatchTouchEvent(ev);
+//    }
 }

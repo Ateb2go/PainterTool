@@ -295,6 +295,11 @@ public class CustomZoomView extends FrameLayout {
         super.dispatchTouchEvent(ev);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
+    }
+
     private void processDoubleTouchEvent(final MotionEvent ev) {
         final float x1 = ev.getX(0);
         final float dx1 = x1 - lastdx1;

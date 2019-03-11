@@ -153,42 +153,6 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
     }
 
 
-    void fillPaint(Point point) {
-
-//        if (checkcolor != color) {
-//            Queue<Point> queue = new LinkedList<Point>();
-//            do {
-//                int x = point.x;
-//                int y = point.y;
-//                while (x > 0 && bitmap.getPixel(x - 1, y) == checkcolor) {
-//                    x--;
-//                }
-//                boolean spanUp = false;
-//                boolean spanDown = false;
-//                while (x < width && bitmap.getPixel(x, y) == checkcolor) {
-//                    bitmap.setPixel(x, y, color);
-//                    if (!spanUp && y > 0 && bitmap.getPixel(x, y - 1) == checkcolor) {
-//                        queue.add(new Point(x, y - 1));
-//                        spanUp = true;
-//                    } else if (spanUp && y > 0 && bitmap.getPixel(x, y + 1) == checkcolor) {
-//                        spanUp = false;
-//                    }
-//                    if (!spanDown && y < height - 1 && bitmap.getPixel(x, y + 1) == checkcolor) {
-//                        queue.add(new Point(x, y + 1));
-//                        spanDown = true;
-//                    } else if (spanDown && y < height - 1 && bitmap.getPixel(x, y + 1) == checkcolor) {
-//                        spanDown = false;
-//                    }
-//                    x++;
-//                }
-//            } while ((point = queue.poll()) != null);
-//
-//        }
-
-
-
-    }
-
 
     void setSpoidColor() {
         isSpoid = true;
