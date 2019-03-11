@@ -355,25 +355,31 @@ public class DrawActivity extends AppCompatActivity {
     void setSpoid(){
         cv.setSpoidColor();
         isSpoidSelected=true;
+        isPenSizeSelected=false;
         gonePenResize();
     }
     void goneSpoid(){
         spoid.setBackgroundColor(Color.TRANSPARENT);
         isSpoidSelected=false;
     }
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_UP:
-                if(isSpoidSelected && !cv.getIsEmptySpace()){
-                    spoidColor=cv.getSpoidColor();
-                    spoid.setBackgroundColor(spoidColor);
-                    setPaletteDialog(spoidColor);
-                }else if(cv.getIsEmptySpace()) cv.setIsEmptySpace();
-                break;
-        }
-        return false;
+    void getDropperColor(int color){
+        spoidColor=color;
+        spoid.setBackgroundColor(spoidColor);
+        setPaletteDialog(spoidColor);
     }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction()){
+//            case MotionEvent.ACTION_UP:
+//                if(isSpoidSelected && !cv.getIsEmptySpace()){
+//                    spoidColor=cv.getSpoidColor();
+//                    spoid.setBackgroundColor(spoidColor);
+//                    setPaletteDialog(spoidColor);
+//                }else if(cv.getIsEmptySpace()) cv.setIsEmptySpace();
+//                break;
+//        }
+//        return false;
+//    }
     void setPaletteDialog(int color){
         etR.setText(Color.red(color)+"");
         etG.setText(Color.green(color)+"");

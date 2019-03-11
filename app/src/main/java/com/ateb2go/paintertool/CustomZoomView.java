@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -293,11 +294,6 @@ public class CustomZoomView extends FrameLayout {
         ev.getY();
 
         super.dispatchTouchEvent(ev);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return false;
     }
 
     private void processDoubleTouchEvent(final MotionEvent ev) {

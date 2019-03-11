@@ -22,6 +22,8 @@ import java.util.Queue;
 
 public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
+    DrawActivity drawActivity;
+
     int width, height;
 
     Bitmap bitmap;
@@ -29,8 +31,6 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
     Paint paint;
     Path path;
     float oldX, oldY;
-
-    Point point = new Point();
 
     int color = Color.BLACK;
     boolean isPenEraser = true, isFillPaint = false, isSpoid = false;
@@ -41,6 +41,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     public CanvasView(Context context, Rect rect) {
         super(context);
+        drawActivity=(DrawActivity) context;
         width = rect.width();
         height = rect.height();
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -104,7 +105,6 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
                     if (Color.alpha(pixel) != 0) {
                         color = Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel));
                     } else isEmptySpace = true;
-                    return false;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -116,6 +116,10 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                if(isSpoid && !isEmptySpace) {
+                    drawActivity.getDropperColor(color);
+                }
+                isEmptySpace=false;
                 return false;
         }
         invalidate();
@@ -152,14 +156,10 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         isSpoid = false;
     }
 
-
-
     void setSpoidColor() {
         isSpoid = true;
-    }
-
-    int getSpoidColor() {
-        return color;
+        isPenEraser=false;
+        isFillPaint=false;
     }
 
     public boolean getIsEmptySpace() {
