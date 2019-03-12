@@ -22,7 +22,7 @@ import java.util.Queue;
 
 public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
-    Context context;
+    DrawActivity drawActivity;
 
     int width, height;
 
@@ -31,8 +31,6 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
     Paint paint;
     Path path;
     float oldX, oldY;
-
-    Point point = new Point();
 
     int color = Color.BLACK;
     boolean isPenEraser = true, isFillPaint = false, isSpoid = false;
@@ -43,7 +41,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     public CanvasView(Context context, Rect rect) {
         super(context);
-        this.context=context;
+        drawActivity=(DrawActivity) context;
         width = rect.width();
         height = rect.height();
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -107,7 +105,6 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
                     if (Color.alpha(pixel) != 0) {
                         color = Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel));
                     } else isEmptySpace = true;
-                    return false;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -119,6 +116,10 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                if(isSpoid && !isEmptySpace) {
+                    drawActivity.getDropperColor(color);
+                }
+                isEmptySpace=false;
                 return false;
         }
         invalidate();
@@ -155,52 +156,10 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         isSpoid = false;
     }
 
-
-    void fillPaint(Point point) {
-
-//        if (checkcolor != color) {
-//            Queue<Point> queue = new LinkedList<Point>();
-//            do {
-//                int x = point.x;
-//                int y = point.y;
-//                while (x > 0 && bitmap.getPixel(x - 1, y) == checkcolor) {
-//                    x--;
-//                }
-//                boolean spanUp = false;
-//                boolean spanDown = false;
-//                while (x < width && bitmap.getPixel(x, y) == checkcolor) {
-//                    bitmap.setPixel(x, y, color);
-//                    if (!spanUp && y > 0 && bitmap.getPixel(x, y - 1) == checkcolor) {
-//                        queue.add(new Point(x, y - 1));
-//                        spanUp = true;
-//                    } else if (spanUp && y > 0 && bitmap.getPixel(x, y + 1) == checkcolor) {
-//                        spanUp = false;
-//                    }
-//                    if (!spanDown && y < height - 1 && bitmap.getPixel(x, y + 1) == checkcolor) {
-//                        queue.add(new Point(x, y + 1));
-//                        spanDown = true;
-//                    } else if (spanDown && y < height - 1 && bitmap.getPixel(x, y + 1) == checkcolor) {
-//                        spanDown = false;
-//                    }
-//                    x++;
-//                }
-//            } while ((point = queue.poll()) != null);
-//
-//        }
-
-
-
-    }
-
-
     void setSpoidColor() {
         isSpoid = true;
-        isPenEraser = false;
-        isFillPaint = false;
-    }
-
-    int getSpoidColor() {
-        return color;
+        isPenEraser=false;
+        isFillPaint=false;
     }
 
     public boolean getIsEmptySpace() {
