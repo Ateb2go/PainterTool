@@ -22,6 +22,8 @@ import java.util.Queue;
 
 public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
+    Context context;
+
     int width, height;
 
     Bitmap bitmap;
@@ -41,6 +43,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     public CanvasView(Context context, Rect rect) {
         super(context);
+        this.context=context;
         width = rect.width();
         height = rect.height();
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -192,6 +195,8 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     void setSpoidColor() {
         isSpoid = true;
+        isPenEraser = false;
+        isFillPaint = false;
     }
 
     int getSpoidColor() {

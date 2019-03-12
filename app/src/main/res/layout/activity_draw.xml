@@ -89,14 +89,15 @@
     <!--ㅡㅡㅡㅡㅡㅡㅡ펜 두께 변경하기ㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
     <LinearLayout
         android:id="@+id/pensize"
-        android:layout_below="@id/hsv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:background="@color/white"
-        android:layout_marginLeft="8dp">
+        android:layout_marginLeft="8dp"
+        android:layout_below="@id/hsv"
+        android:visibility="gone">
         <SeekBar
             android:id="@+id/pensize_seekbar"
             android:layout_width="150dp"
@@ -118,8 +119,8 @@
             android:textSize="16sp"
             android:layout_marginRight="8dp"/>
     </LinearLayout>
-    
-    
+
+
     <!--ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ색 변경ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
     <LinearLayout
         android:id="@+id/colorchange"
@@ -299,6 +300,5 @@
             android:layout_margin="4dp"/>
     </RelativeLayout>
     <!--색 스펙트럼-->
-
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -58,7 +59,10 @@ public class DrawActivity extends AppCompatActivity {
 
     RelativeLayout relativeLayout;
 
-    CustomZoomView zoomView;
+//    CustomZoomView zoomView;
+
+    CustomZoomView cuszv;
+    RelativeLayout innerzoom;
 
 
     @Override
@@ -115,18 +119,33 @@ public class DrawActivity extends AppCompatActivity {
         Rect rect=new Rect(0, 0, width, height);
 
 
-        zoomView=new CustomZoomView(this);
+//        zoomView=new CustomZoomView(this);
 
         cv=new CanvasView(this, rect);
         RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(width, height);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         cv.setLayoutParams(layoutParams);
         cv.setBackgroundColor(Color.WHITE);
-        relativeLayout.addView(zoomView);
+//        relativeLayout.addView(zoomView);
 
-        zoomView.addView(cv);
-        zoomView.setLayoutParams(layoutParams);
-        zoomView.setMaxZoom(4f);
+//        zoomView.addView(cv);
+//        zoomView.setLayoutParams(layoutParams);
+//        zoomView.setMaxZoom(4f);
+
+        layoutParams=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        innerzoom=new RelativeLayout(this);
+        innerzoom.setLayoutParams(layoutParams);
+
+        cuszv=new CustomZoomView(this);
+        relativeLayout.addView(cuszv);
+        cuszv.addView(innerzoom);
+
+        layoutParams=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.BELOW, R.id.hsv);
+        cuszv.setLayoutParams(layoutParams);
+        cuszv.setMaxZoom(4f);
+
+        innerzoom.addView(cv);
     }
 
     public void clickIcons(View view) {
@@ -365,6 +384,7 @@ public class DrawActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_UP:
+                cuszv.isOutside=false;
                 if(isSpoidSelected && !cv.getIsEmptySpace()){
                     spoidColor=cv.getSpoidColor();
                     spoid.setBackgroundColor(spoidColor);
@@ -403,11 +423,4 @@ public class DrawActivity extends AppCompatActivity {
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ줌ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
     //https://github.com/Polidea/android-zoom-view/blob/master/src/pl/polidea/view/ZoomView.java
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(ev.getPointerCount()==2){
-            zoomView.dispatchTouchEvent(ev);
-        }
-        return super.dispatchTouchEvent(ev);
-    }
 }

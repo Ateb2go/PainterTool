@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -30,7 +31,7 @@ public class CustomZoomView extends FrameLayout {
     }
 
     // zooming
-    float zoom = 1.0f;
+    float zoom = 0.5f;
     float maxZoom = 2.0f;
     float smoothZoom = 1.0f;
     float zoomX, zoomY;
@@ -143,7 +144,7 @@ public class CustomZoomView extends FrameLayout {
     }
 
     public void smoothZoomTo(final float zoom, final float x, final float y) {
-        smoothZoom = clamp(1.0f, zoom, maxZoom);
+        smoothZoom = clamp(0.5f, zoom, maxZoom);
         smoothZoomX = x;
         smoothZoomY = y;
         if (listener != null) {
@@ -198,7 +199,7 @@ public class CustomZoomView extends FrameLayout {
         final float h = miniMapHeight;
         final boolean touchingMiniMap = x >= 10.0f && x <= 10.0f + w && y >= 10.0f && y <= 10.0f + h;
 
-        if (showMinimap && smoothZoom > 1.0f && touchingMiniMap && !isOutside) {
+        if (showMinimap && smoothZoom > 1.0f && touchingMiniMap) {
             processSingleTouchOnMinimap(ev);
         } else {
             processSingleTouchOutsideMinimap(ev);
@@ -258,30 +259,29 @@ public class CustomZoomView extends FrameLayout {
 //                break;
 
             case MotionEvent.ACTION_OUTSIDE:
-            case MotionEvent.ACTION_UP:
-
-                // tap
-                if (l < 30.0f) {
-                    // check double tap
-                    if (System.currentTimeMillis() - lastTapTime < 500) {
-                        if (smoothZoom == 1.0f) {
-                            smoothZoomTo(maxZoom, x, y);
-                        } else {
-                            smoothZoomTo(1.0f, getWidth() / 2.0f, getHeight() / 2.0f);
-                        }
-                        lastTapTime = 0;
-                        ev.setAction(MotionEvent.ACTION_CANCEL);
-                        super.dispatchTouchEvent(ev);
-                        return;
-                    }
-
-                    lastTapTime = System.currentTimeMillis();
-
-                    performClick();
-                }
-
-                isOutside=false;
-                break;
+//            case MotionEvent.ACTION_UP:
+//                // tap
+//                if (l < 30.0f) {
+//                    // check double tap
+//                    if (System.currentTimeMillis() - lastTapTime < 500) {
+//                        if (smoothZoom == 1.0f) {
+//                            smoothZoomTo(maxZoom, x, y);
+//                        } else {
+//                            smoothZoomTo(1.0f, getWidth() / 2.0f, getHeight() / 2.0f);
+//                        }
+//                        lastTapTime = 0;
+//                        ev.setAction(MotionEvent.ACTION_CANCEL);
+//                        super.dispatchTouchEvent(ev);
+//                        return;
+//                    }
+//
+//                    lastTapTime = System.currentTimeMillis();
+//
+//                    performClick();
+//                }
+//
+//                isOutside=false;
+//                break;
 
             default:
                 break;
