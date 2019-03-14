@@ -31,7 +31,7 @@ public class CustomZoomView extends FrameLayout {
     }
 
     // zooming
-    float zoom = 0.5f;
+    float zoom = 1.0f;
     float maxZoom = 2.0f;
     float smoothZoom = 1.0f;
     float zoomX, zoomY;
@@ -81,7 +81,6 @@ public class CustomZoomView extends FrameLayout {
         if (maxZoom < 1.0f) {
             return;
         }
-
         this.maxZoom = maxZoom;
     }
 

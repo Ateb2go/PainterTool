@@ -301,4 +301,52 @@
     </RelativeLayout>
     <!--색 스펙트럼-->
 
+    <LinearLayout
+        android:id="@+id/layerbox"
+        android:layout_width="80dp"
+        android:layout_height="250dp"
+        android:orientation="vertical"
+        android:layout_above="@id/fab"
+        android:layout_alignParentRight="true"
+        android:background="@color/white">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:id="@+id/layerlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_addlayer"/>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_deletelayer"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_layers"
+        app:borderWidth="0dp"
+        android:onClick="clickLayer"/>
+
 </RelativeLayout>

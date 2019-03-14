@@ -28,7 +28,6 @@ public class QueueLinearFloodFiller {
 
     public QueueLinearFloodFiller(Bitmap img, int targetColor, int newColor) {
         useImage(img);
-
         setFillColor(newColor);
         setTargetColor(targetColor);
     }
@@ -238,4 +237,5 @@ public class QueueLinearFloodFiller {
             this.Y = y;
         }
     }
+
 }

@@ -4,18 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,7 +64,13 @@ public class DrawActivity extends AppCompatActivity {
 
     RelativeLayout relativeLayout;
 
+    int sWidth, sHeight;
     CustomZoomView zoomView;
+
+    LinearLayout layerBox;
+    FloatingActionButton fab;
+    int layerNum;
+    LinearLayout layerLayout;
 
 
     @Override
@@ -117,17 +128,34 @@ public class DrawActivity extends AppCompatActivity {
 
 
         zoomView=new CustomZoomView(this);
+        RelativeLayout.LayoutParams fLayoutParams=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        fLayoutParams.addRule(RelativeLayout.BELOW, R.id.hsv);
+        zoomView.setLayoutParams(fLayoutParams);
+        relativeLayout.addView(zoomView);
+        zoomView.setMaxZoom(4f);
+
+
+        Point point=new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        sWidth=point.x;
+        sHeight=point.y;
+
+        FrameLayout.LayoutParams layoutParams=new FrameLayout.LayoutParams((int)(width), (int)(height));
+
+        FrameLayout inner=new FrameLayout(this);
+        layoutParams.gravity=Gravity.CENTER;
+        inner.setLayoutParams(layoutParams);
+        zoomView.addView(inner);
 
         cv=new CanvasView(this, rect);
-        RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(width, height);
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        layoutParams=new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         cv.setLayoutParams(layoutParams);
         cv.setBackgroundColor(Color.WHITE);
-        relativeLayout.addView(zoomView);
+        inner.addView(cv);
 
-        zoomView.addView(cv);
-        zoomView.setLayoutParams(layoutParams);
-        zoomView.setMaxZoom(4f);
+        layerBox=findViewById(R.id.layerbox);
+        layerLayout=findViewById(R.id.layerlayout);
+
     }
 
     public void clickIcons(View view) {
@@ -174,8 +202,8 @@ public class DrawActivity extends AppCompatActivity {
                 if(!isSpoidSelected) setSpoid();
                 else goneSpoid();
                 break;
-            case R.id.undo: Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show();  break;
-            case R.id.redo: Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show();  break;
+            case R.id.undo: cv.doUndo(); break;
+            case R.id.redo: cv.doRedo(); break;
             case R.id.save: Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show();  break;
 
         }//check
@@ -396,20 +424,11 @@ public class DrawActivity extends AppCompatActivity {
     };
 
 
-
-
-
-
+    public void clickLayer(View view) {
+        layerBox.setVisibility(View.VISIBLE);
+        layerBox.bringToFront();
+    }
 
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ줌ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-    //https://github.com/Polidea/android-zoom-view/blob/master/src/pl/polidea/view/ZoomView.java
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        if(ev.getPointerCount()==2){
-//            zoomView.dispatchTouchEvent(ev);
-//        }
-//        return super.dispatchTouchEvent(ev);
-//    }
 }

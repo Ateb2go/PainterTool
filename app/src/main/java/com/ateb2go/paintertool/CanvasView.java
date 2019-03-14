@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -27,6 +28,9 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
     int width, height;
 
     Bitmap bitmap;
+    ArrayList<Bitmap> bitmaps=new ArrayList<>();
+    Bitmap[] layers;
+    int taskCount=0;
     Canvas canvas;
     Paint paint;
     Path path;
@@ -45,6 +49,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         width = rect.width();
         height = rect.height();
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmaps.add(Bitmap.createBitmap(bitmap));
         canvas = new Canvas(bitmap);
         path = new Path();
 
@@ -56,7 +61,10 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setAntiAlias(true);
+        paint.setAntiAlias(false);
+
+        floodFiller=new QueueLinearFloodFiller(bitmap, Color.BLACK, Color.WHITE);
+        floodFiller.floodFill(2, 2);
 
     }
 
@@ -64,6 +72,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
     protected void onDetachedFromWindow() {
         if (bitmap != null) bitmap.recycle();
         bitmap = null;
+        bitmaps.clear();
         super.onDetachedFromWindow();
     }
 
@@ -74,9 +83,16 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         }
     }
 
-
-    //dispatchtouchevent로 이벤트가 2개가 되는 순간 기존에 그리던 화면으로 돌아가기
-
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if(event.getPointerCount()==2){
+            bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
+            makeCanvas();
+            invalidate();
+            return false;
+        }
+        return super.dispatchTouchEvent(event);
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -92,11 +108,8 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
                 oldY = y;
                 if (isFillPaint) {
                     checkcolor = bitmap.getPixel((int) x, (int) y);
-                    if(floodFiller==null)floodFiller=new QueueLinearFloodFiller(bitmap, checkcolor, color);
-                    else{
-                        floodFiller.setTargetColor(checkcolor);
-                        floodFiller.setFillColor(color);
-                    }
+
+                    floodFiller=new QueueLinearFloodFiller(bitmap, checkcolor, color);
                     floodFiller.floodFill((int)x, (int)y);
                 }
                 if (isSpoid) {
@@ -120,6 +133,19 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
                     drawActivity.getDropperColor(color);
                 }
                 isEmptySpace=false;
+
+                if(taskCount>20){
+                    taskCount=20;
+                    bitmaps.remove(0);
+                }
+                if(bitmaps.size()-1>taskCount){
+                    for(int i=bitmaps.size()-1;i>taskCount;i--){
+                        bitmaps.remove(i);
+                    }
+                }
+                taskCount++;
+                bitmaps.add(Bitmap.createBitmap(bitmap));
+                invalidate();
                 return false;
         }
         invalidate();
@@ -160,6 +186,30 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         isSpoid = true;
         isPenEraser=false;
         isFillPaint=false;
+    }
+
+    void doUndo(){
+        taskCount--;
+        if(taskCount<0){
+            taskCount=0;
+            return;
+        }
+        bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
+        makeCanvas();
+        invalidate();
+    }
+    void doRedo(){
+        taskCount++;
+        if(taskCount>bitmaps.size()-1){
+            taskCount=bitmaps.size()-1;
+            return;
+        }
+        bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
+        makeCanvas();
+        invalidate();
+    }
+    void makeCanvas(){
+        canvas=new Canvas(bitmap);
     }
 
     public boolean getIsEmptySpace() {
