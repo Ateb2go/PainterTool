@@ -29,7 +29,6 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     Bitmap bitmap;
     ArrayList<Bitmap> bitmaps=new ArrayList<>();
-    Bitmap[] layers;
     int taskCount=0;
     Canvas canvas;
     Paint paint;
@@ -42,6 +41,9 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     int checkcolor;
     QueueLinearFloodFiller floodFiller;
+
+    int layerNum;
+    ArrayList<Bitmap> layers=new ArrayList<>();
 
     public CanvasView(Context context, Rect rect) {
         super(context);
@@ -146,6 +148,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
                 taskCount++;
                 bitmaps.add(Bitmap.createBitmap(bitmap));
                 invalidate();
+                drawActivity.layerImageChange(bitmap, layerNum);
                 return false;
         }
         invalidate();
@@ -197,6 +200,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
         makeCanvas();
         invalidate();
+        drawActivity.layerImageChange(bitmap, layerNum);
     }
     void doRedo(){
         taskCount++;
@@ -207,6 +211,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
         makeCanvas();
         invalidate();
+        drawActivity.layerImageChange(bitmap, layerNum);
     }
     void makeCanvas(){
         canvas=new Canvas(bitmap);
@@ -221,7 +226,17 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
     }
 
 
+    Bitmap getnBitmap(){
+        return bitmap;
+    }
 
+    void getLayerCount(int layerNum){
+        this.layerNum=layerNum;
+    }
+
+    void layerChange(){
+
+    }
 
 
 

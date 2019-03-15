@@ -29,6 +29,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DrawActivity extends AppCompatActivity {
@@ -41,6 +43,7 @@ public class DrawActivity extends AppCompatActivity {
     boolean isPaletteSelected=false;
     boolean isPenSizeSelected=false;
     boolean isSpoidSelected=false;
+    boolean isLayerSelected=false;
 
 
     //펜사이즈
@@ -71,6 +74,8 @@ public class DrawActivity extends AppCompatActivity {
     FloatingActionButton fab;
     int layerNum;
     LinearLayout layerLayout;
+    ArrayList<ImageView> layerArray=new ArrayList<>();
+    LinearLayout.LayoutParams layerParams;
 
 
     @Override
@@ -155,7 +160,13 @@ public class DrawActivity extends AppCompatActivity {
 
         layerBox=findViewById(R.id.layerbox);
         layerLayout=findViewById(R.id.layerlayout);
-
+        ImageView layer1=new ImageView(this);
+        layerParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layerParams.topMargin=4;
+        layer1.setLayoutParams(layerParams);
+        layer1.setImageBitmap(cv.getnBitmap());
+        layerArray.add(layer1);
+        layerLayout.addView(layerArray.get(layerNum));
     }
 
     public void clickIcons(View view) {
@@ -395,19 +406,6 @@ public class DrawActivity extends AppCompatActivity {
         spoid.setBackgroundColor(spoidColor);
         setPaletteDialog(spoidColor);
     }
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        switch (event.getAction()){
-//            case MotionEvent.ACTION_UP:
-//                if(isSpoidSelected && !cv.getIsEmptySpace()){
-//                    spoidColor=cv.getSpoidColor();
-//                    spoid.setBackgroundColor(spoidColor);
-//                    setPaletteDialog(spoidColor);
-//                }else if(cv.getIsEmptySpace()) cv.setIsEmptySpace();
-//                break;
-//        }
-//        return false;
-//    }
     void setPaletteDialog(int color){
         etR.setText(Color.red(color)+"");
         etG.setText(Color.green(color)+"");
@@ -425,10 +423,33 @@ public class DrawActivity extends AppCompatActivity {
 
 
     public void clickLayer(View view) {
-        layerBox.setVisibility(View.VISIBLE);
-        layerBox.bringToFront();
+        if(!isLayerSelected){
+            layerBox.setVisibility(View.VISIBLE);
+            layerBox.bringToFront();
+            isLayerSelected=true;
+        }else{
+            layerBox.setVisibility(View.GONE);
+            isLayerSelected=false;
+        }
     }
 
 
-    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ줌ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ레이어ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    void newLayer(){
+        ImageView layer=new ImageView(this);
+        layer.setLayoutParams(layerParams);
+        layer.setImageBitmap(cv.getnBitmap());
+        layerArray.add(layer);
+        layerNum=layerArray.size()-1;
+        cv.getLayerCount(layerNum);
+    }
+    void deleteLayer(){
+        layerArray.remove(layerNum);
+        layerNum--;
+        cv.getLayerCount(layerNum);
+    }
+    void layerImageChange(Bitmap bitmap, int num){
+        layerArray.get(num).setImageBitmap(bitmap);
+    }
 }
