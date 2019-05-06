@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -32,7 +33,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -174,6 +177,7 @@ public class DrawActivity extends AppCompatActivity {
         layerBox=findViewById(R.id.layerbox);
         layerLayout=findViewById(R.id.layerlayout);
         newLayer();
+
     }
 
     public void clickIcons(View view) {
@@ -520,6 +524,14 @@ public class DrawActivity extends AppCompatActivity {
             scrollView.setBackgroundColor(Color.parseColor("#CCCCCC"));
             isDeleteCheck=false;
         }
+    }
+
+
+    public void saveBitmap(){
+        Bitmap bitmap=cv.mergeBitmap();
+        String name="Draw"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/pnd/";
+//        Log.e("BTAG", path);
     }
 
 }

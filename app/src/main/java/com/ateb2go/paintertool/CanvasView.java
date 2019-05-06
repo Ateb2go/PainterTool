@@ -276,7 +276,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
     }
 
 
-    Bitmap saveBitmap(){
+    Bitmap mergeBitmap(){
         //레이어에 있는 비트맵 모아서 하나로 뭉쳐서 리턴
         Bitmap merge=Bitmap.createBitmap(layerArray.get(0), 0, 0, width, height);
         Canvas canvas=new Canvas(merge);
