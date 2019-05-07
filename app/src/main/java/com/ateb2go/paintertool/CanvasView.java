@@ -41,9 +41,12 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     int checkcolor;
     QueueLinearFloodFiller floodFiller;
+    boolean isFirst=true;
 
     int layerNum;
-    ArrayList<Bitmap> layers=new ArrayList<>();
+    int layerPosition;
+    ArrayList<Bitmap> layerArray=new ArrayList<>();
+
 
     public CanvasView(Context context, Rect rect) {
         super(context);
@@ -51,12 +54,11 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         width = rect.width();
         height = rect.height();
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmaps.add(Bitmap.createBitmap(bitmap));
         canvas = new Canvas(bitmap);
         path = new Path();
 
         paint = new Paint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.parseColor("#010101"));
         paint.setDither(true);
 
         paint.setStrokeWidth(10);
@@ -65,8 +67,6 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setAntiAlias(false);
 
-        floodFiller=new QueueLinearFloodFiller(bitmap, Color.BLACK, Color.WHITE);
-        floodFiller.floodFill(2, 2);
 
     }
 
@@ -80,6 +80,15 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+//        if(isFirst){
+//            floodFiller=new QueueLinearFloodFiller(bitmap, bitmap.getPixel(10, 10), Color.WHITE);
+//            floodFiller.floodFill(10, 10);
+//            bitmaps.add(Bitmap.createBitmap(bitmap));
+//            isFirst=false;
+//        }
+        for(int i=0;i<layerArray.size();i++){
+            canvas.drawBitmap(layerArray.get(i), 0, 0, null);
+        }
         if (bitmap != null) {
             canvas.drawBitmap(bitmap, 0, 0, null);
         }
@@ -136,21 +145,24 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
                 }
                 isEmptySpace=false;
 
-                if(taskCount>20){
-                    taskCount=20;
-                    bitmaps.remove(0);
-                }
-                if(bitmaps.size()-1>taskCount){
-                    for(int i=bitmaps.size()-1;i>taskCount;i--){
-                        bitmaps.remove(i);
+                if(!isSpoid){
+                    if(taskCount>20){
+                        taskCount=20;
+                        bitmaps.remove(0);
                     }
+                    if(bitmaps.size()-1>taskCount){
+                        for(int i=bitmaps.size()-1;i>taskCount;i--){
+                            bitmaps.remove(i);
+                        }
+                    }
+                    taskCount++;
+                    bitmaps.add(Bitmap.createBitmap(bitmap));
+                    invalidate();
+                    drawActivity.layerImageChange(bitmap, layerNum);
+                    return false;
                 }
-                taskCount++;
-                bitmaps.add(Bitmap.createBitmap(bitmap));
-                invalidate();
-                drawActivity.layerImageChange(bitmap, layerNum);
-                return false;
         }
+        layerArray.set(layerNum, Bitmap.createBitmap(bitmap));
         invalidate();
         return true;
     }
@@ -198,6 +210,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
             return;
         }
         bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
+        layerArray.set(layerNum, Bitmap.createBitmap(bitmap));
         makeCanvas();
         invalidate();
         drawActivity.layerImageChange(bitmap, layerNum);
@@ -209,6 +222,7 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
             return;
         }
         bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
+        layerArray.set(layerNum, Bitmap.createBitmap(bitmap));
         makeCanvas();
         invalidate();
         drawActivity.layerImageChange(bitmap, layerNum);
@@ -217,27 +231,60 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         canvas=new Canvas(bitmap);
     }
 
-    public boolean getIsEmptySpace() {
-        return isEmptySpace;
-    }
-
-    public void setIsEmptySpace() {
-        isEmptySpace = false;
-    }
-
 
     Bitmap getnBitmap(){
         return bitmap;
     }
 
-    void setLayerCount(int layerNum){
+    void getLayerCount(int layerNum){
         this.layerNum=layerNum;
     }
 
-    void layerChange(){
-        bitmap=Bitmap.createBitmap(layers.get(layerNum));
+    void layerChange(int position){
+        layerNum=position;
+        bitmap=Bitmap.createBitmap(layerArray.get(position));
+        bitmaps.clear();
+        taskCount=0;
+        bitmaps.add(Bitmap.createBitmap(bitmap));
+        makeCanvas();
+        invalidate();
+        drawActivity.layerImageChange(bitmap, layerNum);
     }
 
+    void newLayer(){
+        Bitmap layer=Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmaps.clear();
+        taskCount=0;
+        bitmap=Bitmap.createBitmap(layer);
+        layerArray.add(Bitmap.createBitmap(bitmap));
+        bitmaps.add(Bitmap.createBitmap(bitmap));
+        makeCanvas();
+        invalidate();
+
+        setPen();
+    }
+
+    void removeLayer(int p){
+        layerArray.remove(p);
+        bitmaps.clear();
+        taskCount=0;
+        bitmap=Bitmap.createBitmap(layerArray.get(layerNum));
+        bitmaps.add(Bitmap.createBitmap(bitmap));
+        drawActivity.layerImageChange(bitmap, layerNum);
+        makeCanvas();
+        invalidate();
+    }
+
+
+    Bitmap mergeBitmap(){
+        //레이어에 있는 비트맵 모아서 하나로 뭉쳐서 리턴
+        Bitmap merge=Bitmap.createBitmap(layerArray.get(0), 0, 0, width, height);
+        Canvas canvas=new Canvas(merge);
+        for(int i=0;i<layerArray.size();i++){
+            canvas.drawBitmap(layerArray.get(i), 0, 0, null);
+        }
+        return merge;
+    }
 
 
 }

@@ -1,11 +1,14 @@
 package com.ateb2go.paintertool;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -25,11 +28,14 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -65,17 +71,24 @@ public class DrawActivity extends AppCompatActivity {
     InputMethodManager imm;
 
 
+    //줌
     RelativeLayout relativeLayout;
 
     int sWidth, sHeight;
     CustomZoomView zoomView;
 
+    //레이어
     LinearLayout layerBox;
     FloatingActionButton fab;
     int layerNum;
     LinearLayout layerLayout;
     ArrayList<ImageView> layerArray=new ArrayList<>();
     LinearLayout.LayoutParams layerParams;
+    ScrollView scrollView;
+    boolean isDeleteCheck=false;
+    //레이어 다이얼로그용 변수
+    int layerP;
+    View selectedLayer;
 
 
     @Override
@@ -158,15 +171,13 @@ public class DrawActivity extends AppCompatActivity {
         cv.setBackgroundColor(Color.WHITE);
         inner.addView(cv);
 
+        scrollView=findViewById(R.id.scrollView);
+        layerParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400);
+        layerParams.topMargin=4;
         layerBox=findViewById(R.id.layerbox);
         layerLayout=findViewById(R.id.layerlayout);
-        ImageView layer1=new ImageView(this);
-        layerParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layerParams.topMargin=4;
-        layer1.setLayoutParams(layerParams);
-        layer1.setImageBitmap(cv.getnBitmap());
-        layerArray.add(layer1);
-        layerLayout.addView(layerArray.get(layerNum));
+        newLayer();
+
     }
 
     public void clickIcons(View view) {
@@ -438,18 +449,89 @@ public class DrawActivity extends AppCompatActivity {
 
     void newLayer(){
         ImageView layer=new ImageView(this);
+        cv.newLayer();
         layer.setLayoutParams(layerParams);
         layer.setImageBitmap(cv.getnBitmap());
+        layer.setPadding(4, 4, 4, 4);
+        layer.setBackgroundColor(Color.WHITE);
+        layer.setOnClickListener(layerOnClick);
         layerArray.add(layer);
         layerNum=layerArray.size()-1;
-        cv.setLayerCount(layerNum);
-    }
-    void deleteLayer(){
-        layerArray.remove(layerNum);
-        layerNum--;
-        cv.setLayerCount(layerNum);
+        cv.getLayerCount(layerNum);
+
+        eraser.setBackgroundColor(Color.TRANSPARENT);
+        fillPaint.setBackgroundColor(Color.TRANSPARENT);
+        pen.setBackgroundColor(Color.RED);
+        setPenResize();
+
+        layerLayout.addView(layerArray.get(layerNum));
     }
     void layerImageChange(Bitmap bitmap, int num){
         layerArray.get(num).setImageBitmap(bitmap);
     }
+
+    View.OnClickListener layerOnClick=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            selectedLayer=v;
+            layerP=layerArray.indexOf(v);
+            if(isDeleteCheck && layerArray.size()>1){
+                AlertDialog.Builder builder=new AlertDialog.Builder(DrawActivity.this);
+                builder.setTitle("레이어 삭제");
+                builder.setMessage((layerP+1)+"번 레이어를 삭제하시겠습니까?");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        layerLayout.removeView(layerArray.get(layerP));
+                        layerArray.remove(selectedLayer);
+                        layerNum=layerArray.size()-1;
+                        cv.getLayerCount(layerNum);
+                        cv.removeLayer(layerP);
+                        scrollView.setBackgroundColor(Color.parseColor("#CCCCCC"));
+                        isDeleteCheck=false;
+                    }
+                });
+                builder.setNegativeButton("취소", null);
+                builder.create().show();
+            }
+            else{
+                layerNum=layerP;
+                cv.layerChange(layerP);
+            }
+        }
+    };
+    View.OnLongClickListener onLongClickListener=new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            return false;
+        }
+    };
+
+    public void addLayer(View view) {
+        newLayer();
+    }
+
+    public void deleteLayer(View view) {
+        if(layerArray.size()<=1){
+            Toast.makeText(this, "레이어가 하나뿐입니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!isDeleteCheck){
+            scrollView.setBackgroundColor(Color.DKGRAY);
+            Toast.makeText(this, "지울 레이어를 선택해주세요", Toast.LENGTH_SHORT).show();
+            isDeleteCheck=true;
+        }else{
+            scrollView.setBackgroundColor(Color.parseColor("#CCCCCC"));
+            isDeleteCheck=false;
+        }
+    }
+
+
+    public void saveBitmap(){
+        Bitmap bitmap=cv.mergeBitmap();
+        String name="Draw"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/pnd/";
+//        Log.e("BTAG", path);
+    }
+
 }
