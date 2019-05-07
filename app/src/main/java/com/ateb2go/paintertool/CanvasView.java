@@ -230,12 +230,12 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         return bitmap;
     }
 
-    void getLayerCount(int layerNum){
+    void setLayerCount(int layerNum){
         this.layerNum=layerNum;
     }
 
     void layerChange(){
-
+        bitmap=Bitmap.createBitmap(layers.get(layerNum));
     }
 
 

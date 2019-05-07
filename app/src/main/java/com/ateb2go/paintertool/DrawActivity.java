@@ -442,12 +442,12 @@ public class DrawActivity extends AppCompatActivity {
         layer.setImageBitmap(cv.getnBitmap());
         layerArray.add(layer);
         layerNum=layerArray.size()-1;
-        cv.getLayerCount(layerNum);
+        cv.setLayerCount(layerNum);
     }
     void deleteLayer(){
         layerArray.remove(layerNum);
         layerNum--;
-        cv.getLayerCount(layerNum);
+        cv.setLayerCount(layerNum);
     }
     void layerImageChange(Bitmap bitmap, int num){
         layerArray.get(num).setImageBitmap(bitmap);
