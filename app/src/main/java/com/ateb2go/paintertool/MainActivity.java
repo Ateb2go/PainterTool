@@ -77,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
                     //저장한 작업 로딩
                     break;
                 case 2:
-//                    intent=new Intent(context, UploadActivity.class);
-//                    startActivity(intent);
-                    Toast.makeText(context, "준비중입니다", Toast.LENGTH_LONG).show();
+                    intent=new Intent(context, UploadActivity.class);
+                    startActivity(intent);
+//                    Toast.makeText(context, "준비중입니다", Toast.LENGTH_LONG).show();
                     break;
                 case 3:
                     intent=new Intent(context, AppreciateActivity.class);
