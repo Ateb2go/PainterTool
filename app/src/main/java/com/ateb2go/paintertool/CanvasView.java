@@ -2,6 +2,7 @@ package com.ateb2go.paintertool;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -41,12 +42,11 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     int checkcolor;
     QueueLinearFloodFiller floodFiller;
-    boolean isFirst=true;
 
     int layerNum;
-    int layerPosition;
     ArrayList<Bitmap> layerArray=new ArrayList<>();
 
+    boolean isLoaded=false;
 
     public CanvasView(Context context, Rect rect) {
         super(context);
@@ -67,7 +67,29 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setAntiAlias(false);
 
+    }
 
+    public CanvasView(Context context, Rect rect, String bitmapPath) {
+        super(context);
+        drawActivity=(DrawActivity) context;
+        width = rect.width();
+        height = rect.height();
+
+        isLoaded=true;
+        bitmap = BitmapFactory.decodeFile(bitmapPath).copy(Bitmap.Config.ARGB_8888, true);
+        canvas = new Canvas(bitmap);
+        invalidate();
+        path = new Path();
+
+        paint = new Paint();
+        paint.setColor(Color.parseColor("#010101"));
+        paint.setDither(true);
+
+        paint.setStrokeWidth(10);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setAntiAlias(false);
     }
 
     @Override
@@ -252,7 +274,13 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
     }
 
     void newLayer(){
-        Bitmap layer=Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap layer=null;
+        if(isLoaded){
+            layer=bitmap.copy(Bitmap.Config.ARGB_8888, true);
+            isLoaded=false;
+        }else{
+            layer=Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        }
         bitmaps.clear();
         taskCount=0;
         bitmap=Bitmap.createBitmap(layer);

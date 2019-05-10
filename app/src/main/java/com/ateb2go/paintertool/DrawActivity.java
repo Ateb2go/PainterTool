@@ -2,16 +2,21 @@ package com.ateb2go.paintertool;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -33,6 +38,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,8 +149,18 @@ public class DrawActivity extends AppCompatActivity {
 
 
         Intent intent=getIntent();
-        int width=Integer.parseInt(intent.getStringExtra("width"));
-        int height=Integer.parseInt(intent.getStringExtra("height"));
+        int width=0;
+        int height=0;
+        Bitmap bitmap=null;
+
+        if(intent.getStringExtra("path").equals("")){
+            width=Integer.parseInt(intent.getStringExtra("width"));
+            height=Integer.parseInt(intent.getStringExtra("height"));
+        } else {
+            bitmap=BitmapFactory.decodeFile(intent.getStringExtra("path"));
+            width=bitmap.getWidth();
+            height=bitmap.getHeight();
+        }
 
         Rect rect=new Rect(0, 0, width, height);
 
@@ -165,7 +185,12 @@ public class DrawActivity extends AppCompatActivity {
         inner.setLayoutParams(layoutParams);
         zoomView.addView(inner);
 
-        cv=new CanvasView(this, rect);
+        if(bitmap!=null){
+            cv=new CanvasView(this, rect, intent.getStringExtra("path"));
+        }else{
+            cv=new CanvasView(this, rect);
+        }
+
         layoutParams=new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         cv.setLayoutParams(layoutParams);
         cv.setBackgroundColor(Color.WHITE);
@@ -226,7 +251,7 @@ public class DrawActivity extends AppCompatActivity {
                 break;
             case R.id.undo: cv.doUndo(); break;
             case R.id.redo: cv.doRedo(); break;
-            case R.id.save: Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show();  break;
+            case R.id.save: setSave(); break;
 
         }//check
 
@@ -500,12 +525,6 @@ public class DrawActivity extends AppCompatActivity {
             }
         }
     };
-    View.OnLongClickListener onLongClickListener=new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            return false;
-        }
-    };
 
     public void addLayer(View view) {
         newLayer();
@@ -527,11 +546,50 @@ public class DrawActivity extends AppCompatActivity {
     }
 
 
+    void setSave(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setMessage("저장하시겠습니까?");
+        builder.setPositiveButton("저장", pos);
+        builder.setNegativeButton("취소", null);
+        builder.create().show();
+    }
+    DialogInterface.OnClickListener pos=new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            saveBitmap();
+        }
+    };
+
     public void saveBitmap(){
         Bitmap bitmap=cv.mergeBitmap();
-        String name="Draw"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//        String path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/pnd/";
-//        Log.e("BTAG", path);
+        String name="Draw"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())+".png";
+
+        try {
+            FileOutputStream fos=openFileOutput(name, MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+
+            Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT).show();
+
+        } catch (FileNotFoundException e) {
+            Log.e("BTAG", "filenotfound");
+        } catch (IOException e) {
+            Log.e("BTAG", "ioex");
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setMessage("작업을 종료하시겠습니까?");
+        builder.setNegativeButton("취소", null);
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.create().show();
+    }
 }

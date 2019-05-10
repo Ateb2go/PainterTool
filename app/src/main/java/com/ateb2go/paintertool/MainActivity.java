@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 1:
                     //저장한 작업 로딩
+                    intent=new Intent(context, LoadActivity.class);
+                    startActivity(intent);
                     break;
                 case 2:
                     intent=new Intent(context, UploadActivity.class);
@@ -180,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent1=new Intent(context, DrawActivity.class);
                 intent1.putExtra("width", etwidth.getText().toString());
                 intent1.putExtra("height", etheight.getText().toString());
+                intent1.putExtra("path", "");
                 startActivity(intent1);
                 dialog.dismiss();
             }
