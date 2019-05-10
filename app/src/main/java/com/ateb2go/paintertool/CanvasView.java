@@ -102,12 +102,6 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        if(isFirst){
-//            floodFiller=new QueueLinearFloodFiller(bitmap, bitmap.getPixel(10, 10), Color.WHITE);
-//            floodFiller.floodFill(10, 10);
-//            bitmaps.add(Bitmap.createBitmap(bitmap));
-//            isFirst=false;
-//        }
         for(int i=0;i<layerArray.size();i++){
             canvas.drawBitmap(layerArray.get(i), 0, 0, null);
         }
@@ -116,16 +110,16 @@ public class CanvasView extends android.support.v7.widget.AppCompatImageView {
         }
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if(event.getPointerCount()==2){
-            bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
-            makeCanvas();
-            invalidate();
-            return false;
-        }
-        return super.dispatchTouchEvent(event);
-    }
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent event) {
+//        if(event.getPointerCount()==2){
+//            bitmap=Bitmap.createBitmap(bitmaps.get(taskCount));
+//            makeCanvas();
+//            invalidate();
+//            return false;
+//        }
+//        return super.dispatchTouchEvent(event);
+//    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

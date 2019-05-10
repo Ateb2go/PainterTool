@@ -43,6 +43,7 @@ public class LoadActivity extends AppCompatActivity {
         path = "/data/data/com.ateb2go.paintertool/files";
 
         File f = new File(path);
+        f.mkdirs();
 //        File[] files = f.listFiles(new FileFilter() {
 //            @Override
 //            public boolean accept(File pathname) {

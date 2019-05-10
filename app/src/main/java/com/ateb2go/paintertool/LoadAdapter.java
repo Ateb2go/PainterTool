@@ -1,7 +1,9 @@
 package com.ateb2go.paintertool;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -85,12 +87,23 @@ public class LoadAdapter extends RecyclerView.Adapter {
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    File file=new File(path);
-                    File[] list=file.listFiles();
-                    Log.e("BTAG", list.length+"");
-                    list[getLayoutPosition()].delete();
-                    items.remove(getLayoutPosition());
-                    notifyItemRemoved(getLayoutPosition());
+
+                    AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                    builder.setMessage("정말로 삭제하시겠습니까?");
+                    builder.setNegativeButton("취소", null);
+                    builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            File file=new File(path);
+                            File[] list=file.listFiles();
+                            Log.e("BTAG", list.length+"");
+                            list[getLayoutPosition()].delete();
+                            items.remove(getLayoutPosition());
+                            notifyItemRemoved(getLayoutPosition());
+                        }
+                    });
+                    builder.create().show();
+
                     return true;
                 }
             });
