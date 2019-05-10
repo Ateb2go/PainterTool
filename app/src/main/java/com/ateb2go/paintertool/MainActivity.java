@@ -75,11 +75,13 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 1:
                     //저장한 작업 로딩
+                    intent=new Intent(context, LoadActivity.class);
+                    startActivity(intent);
                     break;
                 case 2:
-//                    intent=new Intent(context, UploadActivity.class);
-//                    startActivity(intent);
-                    Toast.makeText(context, "준비중입니다", Toast.LENGTH_LONG).show();
+                    intent=new Intent(context, UploadActivity.class);
+                    startActivity(intent);
+//                    Toast.makeText(context, "준비중입니다", Toast.LENGTH_LONG).show();
                     break;
                 case 3:
                     intent=new Intent(context, AppreciateActivity.class);
@@ -180,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent1=new Intent(context, DrawActivity.class);
                 intent1.putExtra("width", etwidth.getText().toString());
                 intent1.putExtra("height", etheight.getText().toString());
+                intent1.putExtra("path", "");
                 startActivity(intent1);
                 dialog.dismiss();
             }

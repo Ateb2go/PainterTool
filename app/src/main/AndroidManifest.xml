@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ateb2go.paintertool">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,8 +22,9 @@
         <activity android:name=".DrawActivity" />
         <activity android:name=".UploadActivity" />
         <activity android:name=".ImageSelectActivity" />
-        <activity android:name=".AppreciateActivity"/>
-        <activity android:name=".PictureActivity"></activity>
+        <activity android:name=".AppreciateActivity" />
+        <activity android:name=".PictureActivity" />
+        <activity android:name=".LoadActivity"></activity>
     </application>
 
 </manifest>

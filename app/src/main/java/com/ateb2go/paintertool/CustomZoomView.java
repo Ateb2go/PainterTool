@@ -198,7 +198,7 @@ public class CustomZoomView extends FrameLayout {
         final float h = miniMapHeight;
         final boolean touchingMiniMap = x >= 10.0f && x <= 10.0f + w && y >= 10.0f && y <= 10.0f + h;
 
-        if (showMinimap && smoothZoom > 1.0f && touchingMiniMap) {
+        if (showMinimap && smoothZoom > 1.0f && touchingMiniMap && isOutside==false) {
             processSingleTouchOnMinimap(ev);
         } else {
             processSingleTouchOutsideMinimap(ev);
@@ -232,19 +232,20 @@ public class CustomZoomView extends FrameLayout {
         isOutside=true;
 
         switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                touchStartX = x;
-                touchStartY = y;
-                touchLastX = x;
-                touchLastY = y;
-                dx = 0;
-                dy = 0;
-                lx = 0;
-                ly = 0;
-                scrolling = false;
-                break;
+//            case MotionEvent.ACTION_DOWN:
+//                touchStartX = x;
+//                touchStartY = y;
+//                touchLastX = x;
+//                touchLastY = y;
+//                dx = 0;
+//                dy = 0;
+//                lx = 0;
+//                ly = 0;
+//                scrolling = false;
+////                return;
+//                break;
 
-//            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_MOVE:
 //                if (scrolling || (smoothZoom > 1.0f && l > 30.0f)) {
 //                    if (!scrolling) {
 //                        scrolling = true;
@@ -255,10 +256,10 @@ public class CustomZoomView extends FrameLayout {
 //                    smoothZoomY -= dy / zoom;
 //                    return;
 //                }
-//                break;
+                break;
 
             case MotionEvent.ACTION_OUTSIDE:
-//            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_UP:
 //                // tap
 //                if (l < 30.0f) {
 //                    // check double tap
@@ -279,8 +280,8 @@ public class CustomZoomView extends FrameLayout {
 //                    performClick();
 //                }
 //
-//                isOutside=false;
-//                break;
+                isOutside=false;
+                break;
 
             default:
                 break;
