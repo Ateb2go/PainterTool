@@ -79,11 +79,12 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case 2:
+                    //업로드
                     intent=new Intent(context, UploadActivity.class);
                     startActivity(intent);
-//                    Toast.makeText(context, "준비중입니다", Toast.LENGTH_LONG).show();
                     break;
                 case 3:
+                    //감상
                     intent=new Intent(context, AppreciateActivity.class);
                     startActivity(intent);
                     break;

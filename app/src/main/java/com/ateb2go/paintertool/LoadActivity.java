@@ -1,5 +1,6 @@
 package com.ateb2go.paintertool;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -34,7 +36,11 @@ public class LoadActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.recycler_load);
 
         loadImage();
-        adapter=new LoadAdapter(arrayList, this, path);
+        if(getIntent().getBooleanExtra("upload", false)){
+            adapter=new LoadAdapter(arrayList, this, path, true, getIntent());
+        }else{
+            adapter=new LoadAdapter(arrayList, this, path);
+        }
         recyclerView.setAdapter(adapter);
 
     }

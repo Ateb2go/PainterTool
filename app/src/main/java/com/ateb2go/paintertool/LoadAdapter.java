@@ -24,11 +24,21 @@ public class LoadAdapter extends RecyclerView.Adapter {
     ArrayList<File> items;
     Context context;
     String path;
+    Boolean isUpload=false;
+    Intent intent;
 
     public LoadAdapter(ArrayList<File> items, Context context, String path) {
         this.items=items;
         this.context=context;
         this.path=path;
+    }
+
+    public LoadAdapter(ArrayList<File> items, Context context, String path, boolean isUpload, Intent intent) {
+        this.items=items;
+        this.context=context;
+        this.path=path;
+        this.isUpload=isUpload;
+        this.intent=intent;
     }
 
     @NonNull
@@ -76,10 +86,16 @@ public class LoadAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent=new Intent(context, DrawActivity.class);
-                    intent.putExtra("path", items.get(getLayoutPosition()).toString());
-                    context.startActivity(intent);
-                    ((Activity)context).finish();
+                    if(isUpload){
+                        intent.putExtra("path", items.get(getLayoutPosition()).toString());
+                        ((LoadActivity)context).setResult(Activity.RESULT_OK, intent);
+                        ((Activity)context).finish();
+                    }else{
+                        Intent intent=new Intent(context, DrawActivity.class);
+                        intent.putExtra("path", items.get(getLayoutPosition()).toString());
+                        context.startActivity(intent);
+                        ((Activity)context).finish();
+                    }
                 }
             });
 
