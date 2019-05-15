@@ -2,6 +2,7 @@ package com.ateb2go.paintertool;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -41,4 +42,6 @@ public class AppreciateActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.searchmenu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+
 }

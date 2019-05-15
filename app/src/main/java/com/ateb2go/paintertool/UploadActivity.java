@@ -77,21 +77,29 @@ public class UploadActivity extends AppCompatActivity {
             Toast.makeText(context, "제목을 입력해주세요", Toast.LENGTH_SHORT).show();
             return;
         }
-        comment=etComment.getText().toString();
+        comment=etComment.getText().toString()+" ";
+
+        AlertDialog.Builder stay=new AlertDialog.Builder(this);
+        stay.setMessage("업로드하는 중...");
+        final AlertDialog stayD=stay.create();
+        stayD.setCancelable(false);
+        stayD.show();
 
         String serverUrl="http://ahpla.dothome.co.kr/Paintndots/uploadDB.php";
-
 
         SimpleMultiPartRequest multiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //응답을 받았을 때 자동 실행
-                new AlertDialog.Builder(UploadActivity.this).setMessage(response).show();
+//                new AlertDialog.Builder(UploadActivity.this).setMessage(response).show();
+                stayD.dismiss();
+                Toast.makeText(context, "업로드 완료", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(UploadActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                stayD.dismiss();
+                Toast.makeText(UploadActivity.this, error.getMessage()+" 에러", Toast.LENGTH_SHORT).show();
             }
         });
 

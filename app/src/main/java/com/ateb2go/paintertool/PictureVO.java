@@ -1,30 +1,40 @@
 package com.ateb2go.paintertool;
 
 public class PictureVO {
-    String name;
-    String imgPath;
+
+    String nickname;
+    private String password;
     String title;
-    String date;
     String comment;
+    String imgPath;
+    String date;
 
     public PictureVO() {
     }
 
-    public String getName() {
-
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
+    public PictureVO(String nickname, String password, String title, String comment, String imgPath, String date) {
+        this.nickname = nickname;
+        this.password = password;
+        this.title = title;
+        this.comment = comment;
         this.imgPath = imgPath;
+        this.date = date;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getTitle() {
@@ -35,14 +45,6 @@ public class PictureVO {
         this.title = title;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -51,12 +53,19 @@ public class PictureVO {
         this.comment = comment;
     }
 
-    public PictureVO(String name, String imgPath, String title, String date, String comment) {
+    public String getImgPath() {
+        return imgPath;
+    }
 
-        this.name = name;
+    public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
-        this.title = title;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
         this.date = date;
-        this.comment = comment;
     }
 }

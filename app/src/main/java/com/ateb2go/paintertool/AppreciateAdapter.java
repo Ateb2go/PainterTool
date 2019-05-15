@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class AppreciateAdapter extends FragmentPagerAdapter {
 
-    Fragment[] fragments=new Fragment[4];
+    Fragment[] fragments=new Fragment[3];
     String[] tabTitles=new String[]{"New Picture", "Weekly Best", "Monthly Best"};
 
     public AppreciateAdapter(FragmentManager fm) {
@@ -18,6 +18,8 @@ public class AppreciateAdapter extends FragmentPagerAdapter {
         fragments[1]=new WeeklyBestFragment();
         fragments[2]=new MonthlyBestFragment();
     }
+
+
 
     @Override
     public Fragment getItem(int i) {
